@@ -2,14 +2,16 @@
 import {RouterView } from 'vue-router'
 import Menubar from 'primevue/menubar';
 import type { MenuItem } from 'primevue/menuitem';
-let items: MenuItem[] = [{label: "hi", url: "/items"}]
+let items: MenuItem[] = [{label: "New Item", url: "/item/new", icon: "pi pi-plus"}]
 </script>
 
 <template>
 
-<Menubar :model="items">
+<Menubar class="m-3" :model="items">
   <template #start>
+    <router-link to="/"> 
         <img alt="logo" src="@/assets/logo.svg" height="50" class="mr-2" />
+    </router-link>
     </template>
     <template #item="{ label, item, props, root, hasSubmenu }">
         <router-link v-if="item.route" v-slot="routerProps" :to="item.route" custom>
@@ -25,7 +27,8 @@ let items: MenuItem[] = [{label: "hi", url: "/items"}]
         </a>
     </template>
 </Menubar>
-<router-view></router-view>
+
+<router-view class="m-3"></router-view>
 </template>
 
 <style scoped>

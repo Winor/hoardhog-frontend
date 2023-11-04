@@ -1,24 +1,31 @@
 <script setup lang="ts">
 
-import DataTable, { type DataTableRowSelectEvent } from 'primevue/datatable';
-import Column from 'primevue/column';
-import ColumnGroup from 'primevue/columngroup';   // optional
-import Row from 'primevue/row';                   // optional
-import  {item} from "hoardhog-api"
+import DataTable, { type DataTableRowSelectEvent } from 'primevue/datatable'
+import Column from 'primevue/column'
+// import ColumnGroup from 'primevue/columngroup'
+// import Row from 'primevue/row'
 
-import {ref} from 'vue'
+import { useItemStore } from '@/stores/item'
+
+import {computed, onMounted, ref} from 'vue'
+import router from '@/router';
 
 let isLoading = ref(true);
-let items = ref<typeof item[]>([])
+let store = useItemStore()
+
 const selectedProduct = ref()
 
-item.all().then((itms) => {
-    items.value = itms
-    isLoading.value = false;
+const items = computed(() => {
+  return store.itemList;
+});
+
+onMounted(async () => {
+  await store.fetchItems();
+  isLoading.value = false
 });
 
 const onRowSelect = (event: DataTableRowSelectEvent) => {
-    console.log(event.data)
+    router.push(`/item/${event.data.id}`)
 };
 const onRowUnselect = (event: DataTableRowSelectEvent) => {
     console.log(event.data)
